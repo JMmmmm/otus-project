@@ -18,13 +18,16 @@ func Unpack(incomingString string) (string, error) {
 	var previousIncomingStringPart string
 	var isPreviousPartScreened bool
 
-	for _, incomingPart := range incomingString {
+	for key, incomingPart := range incomingString {
 		incomingStringPart := string(incomingPart)
 		isScreening := previousIncomingStringPart == `\` && !isPreviousPartScreened
 		switch {
 		case isScreening:
 			previousIncomingStringPart = incomingStringPart
 		case digitCheck.MatchString(incomingStringPart):
+			if key == 0 || (previousIncomingStringPart == "" && !isPreviousPartScreened) {
+				return "", ErrInvalidString
+			}
 			incomingIntPart := int(incomingPart - '0')
 			if incomingIntPart == 0 {
 				previousIncomingStringPart = ""
