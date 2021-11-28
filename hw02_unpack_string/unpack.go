@@ -6,8 +6,10 @@ import (
 	"strings"
 )
 
-var ErrInvalidString = errors.New("invalid string")
-var digitCheck = regexp.MustCompile(`^[0-9]$`)
+var (
+	ErrInvalidString = errors.New("invalid string")
+	digitCheck       = regexp.MustCompile(`^[0-9]$`)
+)
 
 func Unpack(incomingString string) (string, error) {
 	if incomingString == "" {
