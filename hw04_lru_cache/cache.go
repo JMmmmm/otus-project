@@ -36,15 +36,16 @@ func (cache *lruCache) Set(key Key, value interface{}) bool {
 
 		return true
 	}
-	listItemRefer := cache.queue.PushFront(cacheItem{key: key, value: value})
-	cache.items[key] = listItemRefer
 
-	if cache.queue.Len() > cache.capacity {
+	if cache.queue.Len() >= cache.capacity {
 		lastListItem := cache.queue.Back()
 		lastCacheItem := lastListItem.Value.(cacheItem)
 		delete(cache.items, lastCacheItem.key)
 		cache.queue.Remove(lastListItem)
 	}
+
+	listItemRefer := cache.queue.PushFront(cacheItem{key: key, value: value})
+	cache.items[key] = listItemRefer
 
 	return false
 }
