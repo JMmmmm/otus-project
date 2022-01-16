@@ -28,7 +28,7 @@ func (list *list) PushFront(v interface{}) *ListItem {
 		list.firstItem = &ListItemStruct
 		list.lastItem = &ListItemStruct
 	} else {
-		insertBefore(list, list.firstItem, &ListItemStruct)
+		list.insertBefore(list.firstItem, &ListItemStruct)
 	}
 
 	list.len++
@@ -50,7 +50,7 @@ func (list *list) MoveToFront(i *ListItem) {
 		i.Prev.Next = i.Next
 	}
 	ListItemStruct := ListItem{Value: i.Value}
-	insertBefore(list, list.firstItem, &ListItemStruct)
+	list.insertBefore(list.firstItem, &ListItemStruct)
 }
 
 func (list *list) PushBack(v interface{}) *ListItem {
@@ -58,7 +58,7 @@ func (list *list) PushBack(v interface{}) *ListItem {
 		return list.PushFront(v)
 	}
 	ListItemStruct := ListItem{Value: v}
-	insertAfter(list, list.lastItem, &ListItemStruct)
+	list.insertAfter(list.lastItem, &ListItemStruct)
 
 	list.len++
 
@@ -96,7 +96,7 @@ func NewList() List {
 	return new(list)
 }
 
-func insertAfter(list *list, item *ListItem, newItem *ListItem) {
+func (list *list) insertAfter(item *ListItem, newItem *ListItem) {
 	newItem.Prev = item
 	if item.Next == nil {
 		list.lastItem = newItem
@@ -108,7 +108,7 @@ func insertAfter(list *list, item *ListItem, newItem *ListItem) {
 	item.Next = newItem
 }
 
-func insertBefore(list *list, item *ListItem, newItem *ListItem) {
+func (list *list) insertBefore(item *ListItem, newItem *ListItem) {
 	newItem.Next = item
 	if item.Prev == nil {
 		list.firstItem = newItem
