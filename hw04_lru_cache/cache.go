@@ -28,3 +28,39 @@ func NewCache(capacity int) Cache {
 		items:    make(map[Key]*ListItem, capacity),
 	}
 }
+
+func (cache *lruCache) Set(key Key, value interface{}) bool {
+	if listItemRefer, ok := cache.items[key]; ok {
+		cache.queue.MoveToFront(listItemRefer)
+		listItemRefer.Value = cacheItem{key: key, value: value}
+
+		return true
+	}
+
+	if cache.queue.Len() >= cache.capacity {
+		lastListItem := cache.queue.Back()
+		lastCacheItem := lastListItem.Value.(cacheItem)
+		delete(cache.items, lastCacheItem.key)
+		cache.queue.Remove(lastListItem)
+	}
+
+	listItemRefer := cache.queue.PushFront(cacheItem{key: key, value: value})
+	cache.items[key] = listItemRefer
+
+	return false
+}
+
+func (cache *lruCache) Get(key Key) (interface{}, bool) {
+	if listItemRefer, ok := cache.items[key]; ok {
+		cache.queue.MoveToFront(listItemRefer)
+
+		return listItemRefer.Value.(cacheItem).value, true
+	}
+
+	return nil, false
+}
+
+func (cache *lruCache) Clear() {
+	cache.queue = NewList()
+	cache.items = make(map[Key]*ListItem, cache.capacity)
+}
