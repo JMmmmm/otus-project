@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 )
@@ -16,5 +15,5 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Println(RunCmd(inputArguments[2:], env))
+	RunCmd(inputArguments[2:], env)
 }

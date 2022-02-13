@@ -40,8 +40,7 @@ func RunCmd(cmd []string, env Environment) (returnCode int) {
 	command.Stdout = stdout
 	command.Stdin = stdin
 
-	err := command.Run()
-	if err != nil {
+	if err := command.Run(); err != nil {
 		return cmdErrorCode
 	}
 
