@@ -2,8 +2,11 @@ package hw09structvalidator
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 type UserRole string
@@ -42,10 +45,67 @@ func TestValidate(t *testing.T) {
 		expectedErr error
 	}{
 		{
-			// Place your code here.
+			in: User{
+				ID:     "rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr",
+				Age:    2,
+				Role:   "stuff",
+				Phones: []string{"44444", "3223"},
+			},
+			expectedErr: ValidationErrors{
+				ValidationError{Err: errorValidationLength},
+				ValidationError{Err: errorValidationMin},
+				ValidationError{Err: errorValidationLength},
+			},
 		},
-		// ...
-		// Place your code here.
+		{
+			in: User{
+				Role: "stufffff",
+				meta: []byte{33, 33},
+			},
+			expectedErr: ValidationErrors{
+				ValidationError{Err: errorValidationIn},
+			},
+		},
+		{
+			in: App{
+				Version: "fghjk",
+			},
+			expectedErr: nil,
+		},
+		{
+			in: App{
+				Version: "fghjk1",
+			},
+			expectedErr: ValidationErrors{
+				ValidationError{Err: errorValidationLength},
+			},
+		},
+		{
+			in: Token{
+				Header: []byte{22, 33},
+			},
+			expectedErr: nil,
+		},
+		{
+			in:          []int{1, 5},
+			expectedErr: errorInvalidValueType,
+		},
+		{
+			in: Response{
+				Code: 200,
+				Body: "rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr",
+			},
+			expectedErr: nil,
+		},
+		{
+			in: Response{
+				Code: 100,
+				Body: "rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr",
+			},
+			expectedErr: ValidationErrors{
+				ValidationError{Err: errorValidationIn},
+			},
+		},
 	}
 
 	for i, tt := range tests {
@@ -53,7 +113,28 @@ func TestValidate(t *testing.T) {
 			tt := tt
 			t.Parallel()
 
-			// Place your code here.
+			result := Validate(tt.in)
+			if result == nil && tt.expectedErr == nil {
+				return
+			}
+			validationErrors, validationErrorsOk := result.(ValidationErrors)
+			expectedValidationErrors, expectedValidationErrorsOk := tt.expectedErr.(ValidationErrors)
+			if !validationErrorsOk || !expectedValidationErrorsOk {
+				if !errors.Is(result, tt.expectedErr) {
+					t.Errorf("not equal program errors:\n expected - %q;\n actual - %q", tt.expectedErr, result)
+				}
+				return
+			}
+			for key, validationError := range validationErrors {
+				expectedValidationError := expectedValidationErrors[key]
+				require.Error(t, expectedValidationError)
+				if !errors.Is(validationError.Err, expectedValidationError.Err) {
+					t.Errorf("not equal validation errors:\n expected - %q;\n actual - %q",
+						expectedValidationError.Err,
+						result)
+				}
+			}
+
 			_ = tt
 		})
 	}
