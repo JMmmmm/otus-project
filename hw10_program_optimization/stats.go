@@ -1,12 +1,11 @@
 package hw10programoptimization
 
 import (
-	"encoding/json"
-	"fmt"
+	"bufio"
 	"io"
-	"io/ioutil"
-	"regexp"
 	"strings"
+
+	jsoniter "github.com/json-iterator/go"
 )
 
 type User struct {
@@ -22,46 +21,38 @@ type User struct {
 type DomainStat map[string]int
 
 func GetDomainStat(r io.Reader, domain string) (DomainStat, error) {
-	u, err := getUsers(r)
-	if err != nil {
-		return nil, fmt.Errorf("get users error: %w", err)
-	}
-	return countDomains(u, domain)
-}
+	json := jsoniter.ConfigFastest
+	buf := bufio.NewReader(r)
 
-type users [100_000]User
-
-func getUsers(r io.Reader) (result users, err error) {
-	content, err := ioutil.ReadAll(r)
-	if err != nil {
-		return
-	}
-
-	lines := strings.Split(string(content), "\n")
-	for i, line := range lines {
-		var user User
-		if err = json.Unmarshal([]byte(line), &user); err != nil {
-			return
-		}
-		result[i] = user
-	}
-	return
-}
-
-func countDomains(u users, domain string) (DomainStat, error) {
+	var user User
 	result := make(DomainStat)
-
-	for _, user := range u {
-		matched, err := regexp.Match("\\."+domain, []byte(user.Email))
-		if err != nil {
+	i := 0
+	for {
+		line, err := buf.ReadBytes('\n')
+		if len(line) == 0 {
+			break
+		}
+		if err != nil && err != io.EOF {
 			return nil, err
 		}
 
-		if matched {
-			num := result[strings.ToLower(strings.SplitN(user.Email, "@", 2)[1])]
-			num++
-			result[strings.ToLower(strings.SplitN(user.Email, "@", 2)[1])] = num
+		if err = json.Unmarshal(line, &user); err != nil {
+			return nil, err
+		}
+
+		countDomains(user, domain, result)
+		i++
+	}
+
+	return result, nil
+}
+
+func countDomains(user User, domain string, result DomainStat) {
+	if strings.HasSuffix(user.Email, "."+domain) {
+		index := strings.LastIndexByte(user.Email, '@')
+		if index > 0 {
+			domain := user.Email[index+1:]
+			result[strings.ToLower(domain)]++
 		}
 	}
-	return result, nil
 }
