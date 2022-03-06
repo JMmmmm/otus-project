@@ -56,6 +56,7 @@ func BenchmarkGetDomainStat(b *testing.B) {
 		require.NoError(b, err)
 		defer r.Close()
 		data, err := r.File[0].Open()
+		require.NoError(b, err)
 		stat, err := GetDomainStat(data, "biz")
 		require.NoError(b, err)
 		require.Equal(b, expectedBizStat, stat)

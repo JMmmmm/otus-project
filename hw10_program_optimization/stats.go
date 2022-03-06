@@ -3,9 +3,10 @@ package hw10programoptimization
 import (
 	"bufio"
 	"fmt"
-	jsoniter "github.com/json-iterator/go"
 	"io"
 	"strings"
+
+	jsoniter "github.com/json-iterator/go"
 )
 
 type User struct {
@@ -33,7 +34,7 @@ type users [100_000]User
 func getUsers(r io.Reader) (result users, err error) {
 	err = nil
 	var user User
-	var json = jsoniter.ConfigFastest
+	json := jsoniter.ConfigFastest
 	buf := bufio.NewReader(r)
 	i := 0
 	for {
