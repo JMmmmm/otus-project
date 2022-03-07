@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-var TelnetAbsentConnection = errors.New("telnet absent connection")
+var ErrTelnetAbsentConnection = errors.New("error of telnet absent connection")
 
 type TelnetClient interface {
 	Connect() error
@@ -47,7 +47,7 @@ func (client *telnetClient) Connect() error {
 
 func (client *telnetClient) Send() error {
 	if client.conn == nil {
-		return TelnetAbsentConnection
+		return ErrTelnetAbsentConnection
 	}
 	request := make([]byte, 1024)
 	n, err := client.in.Read(request)
@@ -60,7 +60,7 @@ func (client *telnetClient) Send() error {
 
 func (client *telnetClient) Receive() error {
 	if client.conn == nil {
-		return TelnetAbsentConnection
+		return ErrTelnetAbsentConnection
 	}
 	response := make([]byte, 1024)
 	n, err := client.conn.Read(response)
@@ -73,7 +73,7 @@ func (client *telnetClient) Receive() error {
 
 func (client *telnetClient) Close() error {
 	if client.conn == nil {
-		return TelnetAbsentConnection
+		return ErrTelnetAbsentConnection
 	}
 	return client.conn.Close()
 }

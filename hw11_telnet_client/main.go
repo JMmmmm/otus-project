@@ -23,13 +23,12 @@ func main() {
 	ctx, cancel := context.WithTimeout(ctxNotify, timeout)
 
 	telnetClient := NewTelnetClient(address, timeout, os.Stdin, os.Stdout)
-	err := telnetClient.Connect()
-	if err != nil {
+	if err := telnetClient.Connect(); err != nil {
 		log.Fatal(err)
 	}
 	log.Printf("...Connected to %s", address)
 	defer func() {
-		err = telnetClient.Close()
+		err := telnetClient.Close()
 		if err != nil {
 			log.Fatal(err)
 		}
