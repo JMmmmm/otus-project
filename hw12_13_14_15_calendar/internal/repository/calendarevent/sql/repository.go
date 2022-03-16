@@ -2,7 +2,7 @@ package sqlrepository
 
 import (
 	"fmt"
-	"github.com/fixme_my_friend/hw12_13_14_15_calendar/domain"
+	domain "github.com/fixme_my_friend/hw12_13_14_15_calendar/domain/calendarevent"
 	"github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/logger"
 	sqlstorage "github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/storage/sql"
 )
@@ -21,7 +21,15 @@ func NewCalendarEventRepository(storage *sqlstorage.Storage, logger logger.Logge
 
 func (repository *CalendarEventRepository) GetEvents(userId int) ([]domain.CalendarEventEntity, error) {
 	sql := `
-		SELECT * FROM public.calendar_event where user_id = :userId
+		SELECT 
+			id,
+		    user_id,
+		    title,
+		    datetime_event,
+		    duration_event,
+		    coalesce(description, '') as description,
+		    coalesce(notification_interval, '0') as notification_interval
+		FROM public.calendar_event where user_id = :userId
 	`
 
 	rows, err := repository.storage.Db.NamedQueryContext(*repository.storage.Ctx, sql, map[string]interface{}{
@@ -50,14 +58,14 @@ func (repository *CalendarEventRepository) GetEvents(userId int) ([]domain.Calen
 	return events, rows.Err()
 }
 
-func (repository *CalendarEventRepository) Insert(entities []domain.CalendarEvent) error {
-	_, err := repository.storage.Db.NamedExec(`INSERT INTO public.calendar_event (user_id, title, datetime_event, duration_event, description, notification_interval)
-        VALUES (:user_id, :title, :datetime_event, :duration_event, :description, :notification_interval)`, entities)
+func (repository *CalendarEventRepository) Insert(entities []domain.CalendarEventEntity) error {
+	_, err := repository.storage.Db.NamedExec(`INSERT INTO public.calendar_event (user_id, title, datetime_event, duration_event)
+        VALUES (:user_id, :title, :datetime_event, :duration_event)`, entities)
 
 	return err
 }
 
-func (repository *CalendarEventRepository) Update(entity domain.CalendarEvent) error {
+func (repository *CalendarEventRepository) Update(entity domain.CalendarEventEntity) error {
 	_, err := repository.storage.Db.NamedExec(`UPDATE public.calendar_event set title = :title, datetime_event = :datetime_event
         where user_id = :user_id`, entity)
 

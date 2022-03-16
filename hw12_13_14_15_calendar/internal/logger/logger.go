@@ -4,12 +4,8 @@ import (
 	"fmt"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+	"strings"
 )
-
-const levelInfo = "INFO"
-const levelDebug = "DEBUG"
-const levelError = "ERROR"
-const levelWarn = "WARN"
 
 type Logger interface {
 	Info(msg string)
@@ -39,33 +35,19 @@ func (logger *AppLoggerAdapter) Warn(msg string) {
 }
 
 func NewAppLogger(level string, outputPath string) (Logger, error) {
-	translatedLevel, err := translateLevel(level)
+	lvl, err := zap.ParseAtomicLevel(strings.ToLower(level))
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("can't initialize level zap logger: %v", err)
 	}
 	logger, _ := zap.Config{
 		Encoding:    "json",
-		Level:       zap.NewAtomicLevelAt(translatedLevel),
+		Level:       lvl,
 		OutputPaths: []string{outputPath},
 		EncoderConfig: zapcore.EncoderConfig{
-			MessageKey: "message", // <--
+			MessageKey: "message",
+			LevelKey:   "level-key",
 		},
 	}.Build()
 
 	return &AppLoggerAdapter{logger: logger}, nil
-}
-
-func translateLevel(level string) (zapcore.Level, error) {
-	switch level {
-	case levelDebug:
-		return zap.DebugLevel, nil
-	case levelInfo:
-		return zap.InfoLevel, nil
-	case levelError:
-		return zap.ErrorLevel, nil
-	case levelWarn:
-		return zap.WarnLevel, nil
-	default:
-		return zap.DebugLevel, fmt.Errorf("undefined config logger level: %s", level)
-	}
 }

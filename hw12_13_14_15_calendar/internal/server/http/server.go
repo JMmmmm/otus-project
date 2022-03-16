@@ -3,7 +3,7 @@ package internalhttp
 import (
 	"context"
 	"fmt"
-	"github.com/fixme_my_friend/hw12_13_14_15_calendar/domain"
+	domain "github.com/fixme_my_friend/hw12_13_14_15_calendar/domain/calendarevent"
 	"github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/logger"
 	"net/http"
 	"time"
@@ -16,10 +16,9 @@ type Server struct {
 }
 
 type Application interface {
-	CreateEvent(ctx context.Context, id, title string) error
 	GetEvents(userId int) ([]domain.CalendarEventEntity, error)
-	InsertEvent(entities []domain.CalendarEvent) error
-	UpdateEvent(entity domain.CalendarEvent) error
+	CreateEvent(title string, dateTimeEvent time.Time, DurationEvent string, userId int) error
+	UpdateEvent(id int, title string) error
 	DeleteEvent(userId int) error
 }
 
@@ -51,32 +50,17 @@ func (s *Server) Stop(ctx context.Context) error {
 func (s *Server) Handle(w http.ResponseWriter, r *http.Request) {
 	start := time.Now()
 
-	testEvent := &domain.CalendarEvent{
-		UserId:               2,
-		Title:                "test test",
-		DateTimeEvent:        time.Time{},
-		DurationEvent:        "3 days 04:05:06",
-		Description:          "description",
-		NotificationInterval: "3 days 04:05:06",
-	}
-
-	testEvent2 := &domain.CalendarEvent{
-		UserId:               2,
-		Title:                "test2222",
-		DateTimeEvent:        time.Time{},
-		DurationEvent:        "3 days 04:05:06",
-		Description:          "description",
-		NotificationInterval: "3 days 04:05:06",
-	}
-
-	err := s.app.InsertEvent([]domain.CalendarEvent{*testEvent})
+	err := s.app.CreateEvent("test test", time.Time{}, "3 days 04:05:06", 2)
 	s.logger.Info(fmt.Sprintf("insert events error: %v", err))
 
-	eventsResult, err := s.app.GetEvents(1)
+	eventsResult, err := s.app.GetEvents(2)
 	s.logger.Info(fmt.Sprintf("get events: %v and error: %v", eventsResult, err))
 
-	err = s.app.UpdateEvent(*testEvent2)
+	err = s.app.UpdateEvent(2, "test2222")
 	s.logger.Info(fmt.Sprintf("update events error: %v", err))
+
+	eventsResult, err = s.app.GetEvents(2)
+	s.logger.Info(fmt.Sprintf("get events: %v and error: %v", eventsResult, err))
 
 	err = s.app.DeleteEvent(2)
 	s.logger.Info(fmt.Sprintf("delete events error: %v", err))
