@@ -1,4 +1,3 @@
 package domain
 
-type UserNotification struct {
-}
+type UserNotification struct{}

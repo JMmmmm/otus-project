@@ -3,10 +3,11 @@ package internalhttp
 import (
 	"context"
 	"fmt"
-	domain "github.com/fixme_my_friend/hw12_13_14_15_calendar/domain/calendarevent"
-	"github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/logger"
 	"net/http"
 	"time"
+
+	domain "github.com/fixme_my_friend/hw12_13_14_15_calendar/domain/calendarevent"
+	"github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/logger"
 )
 
 type Server struct {
@@ -16,10 +17,10 @@ type Server struct {
 }
 
 type Application interface {
-	GetEvents(userId int) ([]domain.CalendarEventEntity, error)
-	CreateEvent(title string, dateTimeEvent time.Time, DurationEvent string, userId int) error
+	GetEvents(userID int) ([]domain.CalendarEventEntity, error)
+	CreateEvent(title string, dateTimeEvent time.Time, DurationEvent string, userID int) error
 	UpdateEvent(id int, title string) error
-	DeleteEvent(userId int) error
+	DeleteEvent(userID int) error
 }
 
 func NewServer(logger logger.Logger, app Application, addr string) *Server {
@@ -68,5 +69,9 @@ func (s *Server) Handle(w http.ResponseWriter, r *http.Request) {
 	msgID := ""
 	w.Header().Add("msgId", msgID)
 	w.Write([]byte("Hello, world"))
-	s.logger.Warn(fmt.Sprintf("%s %v %s %s %v %s", r.RemoteAddr, start, r.Method, r.URL.Path, time.Since(start), r.UserAgent()))
+
+	message := fmt.Sprintf(
+		"%s %v %s %s %v %s",
+		r.RemoteAddr, start, r.Method, r.URL.Path, time.Since(start), r.UserAgent())
+	s.logger.Warn(message)
 }

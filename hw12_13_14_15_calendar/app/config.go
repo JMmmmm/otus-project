@@ -24,7 +24,7 @@ type ServerConfig struct {
 }
 
 type DB struct {
-	DbType string
+	DBType string
 }
 
 func NewConfig(fpath string) (c Config, err error) {

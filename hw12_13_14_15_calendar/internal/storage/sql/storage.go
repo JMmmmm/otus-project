@@ -4,12 +4,12 @@ import (
 	"context"
 	"fmt"
 
-	_ "github.com/jackc/pgx/stdlib"
+	_ "github.com/jackc/pgx/stdlib" //nolint
 	"github.com/jmoiron/sqlx"
 )
 
 type Storage struct {
-	Db  *sqlx.DB
+	DB  *sqlx.DB
 	Ctx *context.Context
 }
 
@@ -20,16 +20,16 @@ func New() *Storage {
 func (s *Storage) Connect(ctx context.Context, dsn string) (err error) {
 	s.Ctx = &ctx
 
-	s.Db, err = sqlx.Open("pgx", dsn)
+	s.DB, err = sqlx.Open("pgx", dsn)
 	if err != nil {
 		return fmt.Errorf("cannot open pgx driver: %w", err)
 	}
 
-	return s.Db.PingContext(ctx)
+	return s.DB.PingContext(ctx)
 }
 
 func (s *Storage) Close(ctx context.Context) error {
-	return s.Db.Close()
+	return s.DB.Close()
 }
 
 func (s *Storage) Get() {

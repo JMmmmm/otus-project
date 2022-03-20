@@ -1,32 +1,31 @@
 package memoryrepository
 
 import (
-	domain "github.com/fixme_my_friend/hw12_13_14_15_calendar/domain/calendarevent"
-	"github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/logger"
-	memorystorage "github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/storage/memory"
 	"strconv"
+
+	domain "github.com/fixme_my_friend/hw12_13_14_15_calendar/domain/calendarevent"
+	memorystorage "github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/storage/memory"
 )
 
 type CalendarEventRepository struct {
 	storage *memorystorage.Storage
-	logger  logger.Logger
 }
 
-func NewCalendarEventRepository(storage *memorystorage.Storage, logger logger.Logger) *CalendarEventRepository {
+func NewCalendarEventRepository(storage *memorystorage.Storage) *CalendarEventRepository {
 	return &CalendarEventRepository{
 		storage: storage,
 	}
 }
 
-func (repository *CalendarEventRepository) GetEvents(userId int) ([]domain.CalendarEventEntity, error) {
-	entity, err := repository.storage.Find(strconv.Itoa(userId))
+func (repository *CalendarEventRepository) GetEvents(userID int) ([]domain.CalendarEventEntity, error) {
+	entity, err := repository.storage.Find(strconv.Itoa(userID))
 
 	return []domain.CalendarEventEntity{entity}, err
 }
 
 func (repository *CalendarEventRepository) Insert(entities []domain.CalendarEventEntity) error {
 	for _, entity := range entities {
-		err := repository.storage.Insert(strconv.Itoa(entity.UserId), &entity)
+		err := repository.storage.Insert(strconv.Itoa(entity.UserID), entity)
 		if err != nil {
 			return err
 		}
@@ -34,16 +33,18 @@ func (repository *CalendarEventRepository) Insert(entities []domain.CalendarEven
 
 	return nil
 }
+
 func (repository *CalendarEventRepository) Update(entity domain.CalendarEventEntity) error {
-	err := repository.storage.Insert(strconv.Itoa(entity.UserId), &entity)
+	err := repository.storage.Update(strconv.Itoa(entity.UserID), entity)
 	if err != nil {
 		return err
 	}
 
 	return nil
 }
-func (repository *CalendarEventRepository) Delete(userId int) error {
-	err := repository.storage.Delete(strconv.Itoa(userId))
+
+func (repository *CalendarEventRepository) Delete(userID int) error {
+	err := repository.storage.Delete(strconv.Itoa(userID))
 	if err != nil {
 		return err
 	}

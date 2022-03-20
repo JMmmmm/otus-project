@@ -2,9 +2,10 @@ package logger
 
 import (
 	"fmt"
+	"strings"
+
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
-	"strings"
 )
 
 type Logger interface {
@@ -37,7 +38,7 @@ func (logger *AppLoggerAdapter) Warn(msg string) {
 func NewAppLogger(level string, outputPath string) (Logger, error) {
 	lvl, err := zap.ParseAtomicLevel(strings.ToLower(level))
 	if err != nil {
-		return nil, fmt.Errorf("can't initialize level zap logger: %v", err)
+		return nil, fmt.Errorf("can't initialize level zap logger: %w", err)
 	}
 	logger, _ := zap.Config{
 		Encoding:    "json",

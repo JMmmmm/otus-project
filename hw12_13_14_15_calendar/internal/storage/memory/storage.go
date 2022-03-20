@@ -2,8 +2,9 @@ package memorystorage
 
 import (
 	"errors"
-	domain "github.com/fixme_my_friend/hw12_13_14_15_calendar/domain/calendarevent"
 	"sync"
+
+	domain "github.com/fixme_my_friend/hw12_13_14_15_calendar/domain/calendarevent"
 )
 
 type Storage struct {
@@ -44,14 +45,14 @@ func (s *Storage) Get(offset, limit uint) []domain.CalendarEventEntity {
 	return list
 }
 
-func (s *Storage) Insert(key string, value *domain.CalendarEventEntity) error {
+func (s *Storage) Insert(key string, value domain.CalendarEventEntity) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	s.cache[key] = *value
+	s.cache[key] = value
 	return nil
 }
 
-func (s *Storage) Update(key string, value *domain.CalendarEventEntity) error {
+func (s *Storage) Update(key string, value domain.CalendarEventEntity) error {
 	return s.Insert(key, value)
 }
 

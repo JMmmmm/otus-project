@@ -3,23 +3,19 @@ package main
 import (
 	"context"
 	"flag"
-	"github.com/fixme_my_friend/hw12_13_14_15_calendar/app"
+	"fmt"
 	"log"
 	"net"
-	"os"
 	"os/signal"
 	"syscall"
 	"time"
 
+	"github.com/fixme_my_friend/hw12_13_14_15_calendar/app"
 	"github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/logger"
 	internalhttp "github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/server/http"
 )
 
 var configFile string
-
-//func init() {
-//	flag.StringVar(&configFile, "config", "/etc/calendar/config.toml", "Path to configuration file")
-//}
 
 func init() {
 	flag.StringVar(&configFile, "config", "configs/config.toml", "Path to configuration file")
@@ -48,7 +44,8 @@ func main() {
 
 	calendar, err := app.CreateApp(ctx, config, logg)
 	if err != nil {
-		log.Fatalf("can not create App: %v", err)
+		logg.Error(fmt.Sprintf("can not create App: %v", err))
+		return
 	}
 	server := internalhttp.NewServer(logg, calendar, net.JoinHostPort(config.Server.Host, config.Server.Port))
 
@@ -56,9 +53,9 @@ func main() {
 		<-ctx.Done()
 
 		ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
-		defer cancel()
-
-		if err := server.Stop(ctx); err != nil {
+		err := server.Stop(ctx)
+		cancel()
+		if err != nil {
 			logg.Error("failed to stop http server: " + err.Error())
 		}
 	}()
@@ -68,6 +65,6 @@ func main() {
 	if err := server.Start(ctx); err != nil {
 		logg.Error("failed to start http server: " + err.Error())
 		cancel()
-		os.Exit(1) //nolint:gocritic
+		return
 	}
 }
