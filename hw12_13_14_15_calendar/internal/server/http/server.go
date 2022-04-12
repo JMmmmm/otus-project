@@ -3,15 +3,15 @@ package internalhttp
 import (
 	"context"
 	"fmt"
-	calendar_event_api "github.com/fixme_my_friend/hw12_13_14_15_calendar/pkg/calendar-event"
+	calendar_event_api "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/calendar-event"
 	"log"
 	"net"
 	"net/http"
 	"time"
 
+	domain "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/domain/calendarevent"
+	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/logger"
 	"github.com/felixge/httpsnoop"
-	domain "github.com/fixme_my_friend/hw12_13_14_15_calendar/domain/calendarevent"
-	"github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/logger"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/soheilhy/cmux"
 	"google.golang.org/grpc"

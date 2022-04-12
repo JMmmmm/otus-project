@@ -4,12 +4,12 @@ import (
 	"context"
 	"fmt"
 
-	domain "github.com/fixme_my_friend/hw12_13_14_15_calendar/domain/calendarevent"
-	"github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/logger"
-	memoryrepository "github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/repository/calendarevent/memory"
-	sqlrepository "github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/repository/calendarevent/sql"
-	memorystorage "github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/storage/memory"
-	sqlstorage "github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/storage/sql"
+	domain "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/domain/calendarevent"
+	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/logger"
+	memoryrepository "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/repository/calendarevent/memory"
+	sqlrepository "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/repository/calendarevent/sql"
+	memorystorage "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/storage/memory"
+	sqlstorage "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/storage/sql"
 )
 
 const (

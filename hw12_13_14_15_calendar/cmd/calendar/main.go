@@ -10,9 +10,9 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/fixme_my_friend/hw12_13_14_15_calendar/app"
-	"github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/logger"
-	internalhttp "github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/server/http"
+	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/app"
+	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/logger"
+	internalhttp "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/server/http"
 )
 
 var configFile string

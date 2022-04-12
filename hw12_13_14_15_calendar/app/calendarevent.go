@@ -3,7 +3,7 @@ package app
 import (
 	"time"
 
-	domain "github.com/fixme_my_friend/hw12_13_14_15_calendar/domain/calendarevent"
+	domain "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/domain/calendarevent"
 )
 
 func (a *App) GetEvents(userID int) ([]domain.CalendarEventEntity, error) {

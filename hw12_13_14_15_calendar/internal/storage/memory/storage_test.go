@@ -3,8 +3,8 @@ package memorystorage_test
 import (
 	"testing"
 
-	domain "github.com/fixme_my_friend/hw12_13_14_15_calendar/domain/calendarevent"
-	memorystorage "github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/storage/memory"
+	domain "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/domain/calendarevent"
+	memorystorage "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/storage/memory"
 	"github.com/stretchr/testify/require"
 )
 

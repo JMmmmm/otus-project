@@ -1,8 +1,8 @@
 package app
 
 import (
-	domain "github.com/fixme_my_friend/hw12_13_14_15_calendar/domain/calendarevent"
-	"github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/logger"
+	domain "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/domain/calendarevent"
+	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/logger"
 )
 
 type App struct {
