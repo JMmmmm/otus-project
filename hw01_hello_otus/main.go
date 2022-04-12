@@ -1,13 +1,13 @@
 package main
 
-import (
-	"fmt"
-
-	"golang.org/x/example/stringutil"
-)
-
 func main() {
-	reversedMessage := stringutil.Reverse("Hello, OTUS!")
+	a := make([]int, 0, 2)
+	b := a
+	a = append(a, 1)
+	b = append(b, 2)
+	println(a[0], b[0])
 
-	fmt.Println(reversedMessage)
+	//reversedMessage := stringutil.Reverse("Hello, OTUS!")
+	//
+	//fmt.Println(reversedMessage)
 }
