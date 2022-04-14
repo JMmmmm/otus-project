@@ -3,13 +3,14 @@ package internalhttp
 import (
 	"context"
 	"fmt"
+	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/api"
+	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/app"
 	calendar_event_api "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/calendar-event"
 	"log"
 	"net"
 	"net/http"
 	"time"
 
-	domain "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/domain/calendarevent"
 	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/logger"
 	"github.com/felixge/httpsnoop"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
@@ -26,36 +27,6 @@ type Server struct {
 	grpcListener net.Listener
 }
 
-type Controller struct {
-	calendar_event_api.UnimplementedCalendarEventServer
-	app Application
-}
-
-func (c *Controller) GetEvents(ctx context.Context, req *calendar_event_api.GetUserEventsRequest) (*calendar_event_api.Events, error) {
-	entities, err := c.app.GetEvents(int(req.UserId))
-	if err != nil {
-		return nil, err
-	}
-
-	userEvents := make([]*calendar_event_api.Event, len(entities))
-	for key, entity := range entities {
-		userEvents[key] = &calendar_event_api.Event{
-			Id:     entity.ID,
-			UserId: int64(entity.UserID),
-			Title:  entity.Title,
-		}
-	}
-
-	return &calendar_event_api.Events{Content: userEvents}, nil
-}
-
-type Application interface {
-	GetEvents(userID int) ([]domain.CalendarEventEntity, error)
-	CreateEvent(title string, dateTimeEvent time.Time, DurationEvent string, userID int) error
-	UpdateEvent(id int, title string) error
-	DeleteEvent(userID int) error
-}
-
 func withLogger(handler http.Handler, logger logger.Logger) http.Handler {
 	return http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
 		m := httpsnoop.CaptureMetrics(handler, writer, request)
@@ -63,21 +34,21 @@ func withLogger(handler http.Handler, logger logger.Logger) http.Handler {
 	})
 }
 
-func NewServer(logger logger.Logger, app Application, addr string) *Server {
+func NewServer(logger logger.Logger, app app.Application, addr string) *Server {
 	grpcSever := grpc.NewServer()
 
-	calendar_event_api.RegisterCalendarEventServer(grpcSever, &Controller{
-		app: app,
+	calendar_event_api.RegisterCalendarEventServer(grpcSever, &api.Controller{
+		App: app,
 	})
 	mux := runtime.NewServeMux()
-	err := calendar_event_api.RegisterCalendarEventHandlerFromEndpoint(context.Background(), mux, "localhost:8081", []grpc.DialOption{grpc.WithInsecure()})
+	err := calendar_event_api.RegisterCalendarEventHandlerFromEndpoint(context.Background(), mux, addr, []grpc.DialOption{grpc.WithInsecure()})
 	if err != nil {
 		log.Fatal(err)
 	}
 	server := &http.Server{
 		Handler: withLogger(mux, logger),
 	}
-	l, err := net.Listen("tcp", ":8081")
+	l, err := net.Listen("tcp", addr)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -119,31 +90,3 @@ func (s *Server) Stop(ctx context.Context) error {
 
 	return s.httpServer.Shutdown(ctx)
 }
-
-//func (s *Server) Handle(w http.ResponseWriter, r *http.Request) {
-//	start := time.Now()
-//
-//	err := s.app.CreateEvent("test test", time.Time{}, "3 days 04:05:06", 2)
-//	s.logger.Info(fmt.Sprintf("insert events error: %v", err))
-//
-//	eventsResult, err := s.app.GetEvents(2)
-//	s.logger.Info(fmt.Sprintf("get events: %v and error: %v", eventsResult, err))
-//
-//	err = s.app.UpdateEvent(2, "test2222")
-//	s.logger.Info(fmt.Sprintf("update events error: %v", err))
-//
-//	eventsResult, err = s.app.GetEvents(2)
-//	s.logger.Info(fmt.Sprintf("get events: %v and error: %v", eventsResult, err))
-//
-//	err = s.app.DeleteEvent(2)
-//	s.logger.Info(fmt.Sprintf("delete events error: %v", err))
-//
-//	msgID := ""
-//	w.Header().Add("msgId", msgID)
-//	w.Write([]byte("Hello, world"))
-//
-//	message := fmt.Sprintf(
-//		"%s %v %s %s %v %s",
-//		r.RemoteAddr, start, r.Method, r.URL.Path, time.Since(start), r.UserAgent())
-//	s.logger.Warn(message)
-//}

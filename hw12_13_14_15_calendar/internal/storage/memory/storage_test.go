@@ -16,6 +16,7 @@ func TestStorage(t *testing.T) {
 		test3 := domain.CalendarEventEntity{ID: "123-41234-8888", Title: "Test title 3"}
 		s.Insert("test", test)
 		s.Insert("test2", test2)
+		s.Insert("test3", test2)
 		s.Update("test3", test3)
 		var (
 			val domain.CalendarEventEntity

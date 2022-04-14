@@ -31,6 +31,3 @@ func (s *Storage) Connect(ctx context.Context, dsn string) (err error) {
 func (s *Storage) Close(ctx context.Context) error {
 	return s.DB.Close()
 }
-
-func (s *Storage) Get() {
-}

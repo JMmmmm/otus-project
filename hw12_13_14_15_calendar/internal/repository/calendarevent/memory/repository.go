@@ -23,7 +23,7 @@ func (repository *CalendarEventRepository) GetEvents(userID int) ([]domain.Calen
 	return []domain.CalendarEventEntity{entity}, err
 }
 
-func (repository *CalendarEventRepository) Insert(entities []domain.CalendarEventEntity) error {
+func (repository *CalendarEventRepository) InsertEntities(entities []domain.CalendarEventEntity) error {
 	for _, entity := range entities {
 		err := repository.storage.Insert(strconv.Itoa(entity.UserID), entity)
 		if err != nil {
@@ -35,7 +35,7 @@ func (repository *CalendarEventRepository) Insert(entities []domain.CalendarEven
 }
 
 func (repository *CalendarEventRepository) Update(entity domain.CalendarEventEntity) error {
-	err := repository.storage.Update(strconv.Itoa(entity.UserID), entity)
+	err := repository.storage.Update(entity.ID, entity)
 	if err != nil {
 		return err
 	}
@@ -43,8 +43,8 @@ func (repository *CalendarEventRepository) Update(entity domain.CalendarEventEnt
 	return nil
 }
 
-func (repository *CalendarEventRepository) Delete(userID int) error {
-	err := repository.storage.Delete(strconv.Itoa(userID))
+func (repository *CalendarEventRepository) Delete(id string) error {
+	err := repository.storage.Delete(id)
 	if err != nil {
 		return err
 	}

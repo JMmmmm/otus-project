@@ -8,7 +8,7 @@ dsn = "host=0.0.0.0 port=5432 user=postgres password=postgres dbname=postgres ss
 
 [server]
 host = ""
-port = "8080"
+port = "8081"
 
 [db]
 dbType = "sql"

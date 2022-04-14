@@ -37,7 +37,7 @@ migrate:
 .vendor-proto:
 	#mkdir -p vendor.protogen
 	#mkdir -p vendor.protogen/api/calendar-event
-	cp api/EventService.proto vendor.protogen/api/calendar-event
+	cp api/proto/EventService.proto vendor.protogen/api/calendar-event
 
 #	@if [ ! -d vendor.protogen/google ]; then \
 #		git clone https://github.com/googleapis/googleapis vendor.protogen/googleapis &&\

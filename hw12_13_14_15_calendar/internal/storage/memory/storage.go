@@ -53,6 +53,10 @@ func (s *Storage) Insert(key string, value domain.CalendarEventEntity) error {
 }
 
 func (s *Storage) Update(key string, value domain.CalendarEventEntity) error {
+	if _, err := s.Find(key); err != nil {
+		return err
+	}
+
 	return s.Insert(key, value)
 }
 

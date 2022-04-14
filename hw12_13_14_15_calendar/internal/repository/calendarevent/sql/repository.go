@@ -58,7 +58,7 @@ func (repository *CalendarEventRepository) GetEvents(userID int) ([]domain.Calen
 	return events, rows.Err()
 }
 
-func (repository *CalendarEventRepository) Insert(entities []domain.CalendarEventEntity) error {
+func (repository *CalendarEventRepository) InsertEntities(entities []domain.CalendarEventEntity) error {
 	_, err := repository.storage.DB.NamedExec(`
 		INSERT INTO public.calendar_event (user_id, title, datetime_event, duration_event)
         VALUES (:user_id, :title, :datetime_event, :duration_event)
@@ -70,14 +70,14 @@ func (repository *CalendarEventRepository) Insert(entities []domain.CalendarEven
 func (repository *CalendarEventRepository) Update(entity domain.CalendarEventEntity) error {
 	_, err := repository.storage.DB.NamedExec(`
 		UPDATE public.calendar_event set title = :title, datetime_event = :datetime_event
-        where user_id = :user_id
+        where id = :id
 	`, entity)
 
 	return err
 }
 
-func (repository *CalendarEventRepository) Delete(userID int) error {
-	_, err := repository.storage.DB.Exec(`DELETE from public.calendar_event where user_id = $1`, userID)
+func (repository *CalendarEventRepository) Delete(id string) error {
+	_, err := repository.storage.DB.Exec(`DELETE from public.calendar_event where id = $1`, id)
 
 	return err
 }

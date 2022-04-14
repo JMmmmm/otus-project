@@ -16,25 +16,25 @@ func (a *App) GetEvents(userID int) ([]domain.CalendarEventEntity, error) {
 }
 
 func (a *App) CreateEvent(title string, dateTimeEvent time.Time, durationEvent string, userID int) error {
-	event := &domain.CalendarEventEntity{
+	event := domain.CalendarEventEntity{
 		UserID:        userID,
 		Title:         title,
 		DateTimeEvent: dateTimeEvent,
 		DurationEvent: durationEvent,
 	}
 
-	return a.calendarEventRepository.Insert([]domain.CalendarEventEntity{*event})
+	return a.calendarEventRepository.InsertEntities([]domain.CalendarEventEntity{event})
 }
 
-func (a *App) UpdateEvent(userID int, title string) error {
-	event := &domain.CalendarEventEntity{
-		UserID: userID,
-		Title:  title,
+func (a *App) UpdateEvent(id string, title string) error {
+	event := domain.CalendarEventEntity{
+		ID:    id,
+		Title: title,
 	}
 
-	return a.calendarEventRepository.Update(*event)
+	return a.calendarEventRepository.Update(event)
 }
 
-func (a *App) DeleteEvent(userID int) error {
-	return a.calendarEventRepository.Delete(userID)
+func (a *App) DeleteEvent(id string) error {
+	return a.calendarEventRepository.Delete(id)
 }

@@ -2,7 +2,7 @@ package domain
 
 type CalendarEventRepository interface {
 	GetEvents(userID int) ([]CalendarEventEntity, error)
-	Insert(entities []CalendarEventEntity) error
+	InsertEntities(entities []CalendarEventEntity) error
 	Update(entity CalendarEventEntity) error
-	Delete(userID int) error
+	Delete(id string) error
 }

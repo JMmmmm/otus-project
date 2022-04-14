@@ -3,15 +3,19 @@ package app
 import (
 	domain "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/domain/calendarevent"
 	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/logger"
+	"time"
 )
+
+type Application interface {
+	GetEvents(userID int) ([]domain.CalendarEventEntity, error)
+	CreateEvent(title string, dateTimeEvent time.Time, DurationEvent string, userID int) error
+	UpdateEvent(id string, title string) error
+	DeleteEvent(id string) error
+}
 
 type App struct {
 	logger                  logger.Logger
 	calendarEventRepository domain.CalendarEventRepository
-}
-
-type Storage interface {
-	Get()
 }
 
 func New(logger logger.Logger, calendarEventRepository domain.CalendarEventRepository) *App {
