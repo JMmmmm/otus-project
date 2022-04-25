@@ -2,12 +2,13 @@ package api
 
 import (
 	"context"
+	"log"
+	"testing"
+
 	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/app"
 	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/logger"
 	calendar_event_api "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/calendar-event"
 	"github.com/stretchr/testify/require"
-	"log"
-	"testing"
 )
 
 func getController() *Controller {
