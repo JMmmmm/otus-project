@@ -3,13 +3,14 @@ package internalhttp
 import (
 	"context"
 	"fmt"
-	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/api"
-	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/app"
-	calendar_event_api "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/calendar-event"
 	"log"
 	"net"
 	"net/http"
 	"time"
+
+	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/api"
+	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/app"
+	calendar_event_api "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/calendar-event"
 
 	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/logger"
 	"github.com/felixge/httpsnoop"
