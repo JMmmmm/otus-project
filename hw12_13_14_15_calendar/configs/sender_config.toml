@@ -1,0 +1,12 @@
+[logger]
+level = "INFO"
+#outputPath = "logs/app.log"
+outputPath = "stdout"
+
+[rmq]
+uri = "amqp://guest:guest@localhost:5672/"
+exchange = "test-exchange-2"
+exchangeType = "direct"
+key = "test-2"
+reliable = true
+queue = 'test-2'
