@@ -2,10 +2,12 @@ package api
 
 import (
 	"context"
-	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/app/calendar"
 	"log"
 	"testing"
 
+	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/app/calendar"
+
+	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/app/calendar"
 	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/logger"
 	calendar_event_api "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/calendar-event"
 	"github.com/stretchr/testify/require"

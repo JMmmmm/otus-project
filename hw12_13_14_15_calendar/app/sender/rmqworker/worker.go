@@ -2,10 +2,11 @@ package senderrmqworker
 
 import (
 	"context"
+	"log"
+
 	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/logger"
 	rmqconsumer "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/rmq/consumer"
 	"github.com/streadway/amqp"
-	"log"
 )
 
 type Worker struct {

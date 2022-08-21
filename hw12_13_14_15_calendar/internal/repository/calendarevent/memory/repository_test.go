@@ -18,6 +18,7 @@ func TestRepository(t *testing.T) {
 
 		test3 = domain.CalendarEventEntity{ID: "123-41234-8888", Title: "Test title 3", UserID: 3}
 		err = repository.Update(test3)
+		require.NoError(t, err)
 
 		var val []domain.CalendarEventEntity
 		val, err = repository.GetEvents(test.UserID)

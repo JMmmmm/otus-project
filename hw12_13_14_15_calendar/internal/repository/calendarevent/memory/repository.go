@@ -42,16 +42,16 @@ func (repository *CalendarEventRepository) GetEvents(userID int) ([]domain.Calen
 func (repository *CalendarEventRepository) InsertEntities(entities []domain.CalendarEventEntity) error {
 	var err error
 	for _, entity := range entities {
-		userId := strconv.Itoa(entity.UserID)
+		userID := strconv.Itoa(entity.UserID)
 
 		repository.mu.Lock()
 
-		if _, found := repository.cache[entity.ID]; found == true {
+		if _, found := repository.cache[entity.ID]; found {
 			err = fmt.Errorf("not found in cache: %w", err)
 		}
 
-		existUserEntities, found := repository.cacheByUserIds[userId]
-		if found == true {
+		existUserEntities, found := repository.cacheByUserIds[userID]
+		if found {
 			err = fmt.Errorf("not found in cache indexed by users ids: %w", err)
 		}
 
@@ -60,9 +60,9 @@ func (repository *CalendarEventRepository) InsertEntities(entities []domain.Cale
 		if len(existUserEntities) == 0 {
 			entitiesMap := make(map[string]domain.CalendarEventEntity)
 			entitiesMap[entity.ID] = entity
-			repository.cacheByUserIds[userId] = entitiesMap
+			repository.cacheByUserIds[userID] = entitiesMap
 		} else {
-			repository.cacheByUserIds[userId][entity.ID] = entity
+			repository.cacheByUserIds[userID][entity.ID] = entity
 		}
 
 		repository.mu.Unlock()
@@ -76,10 +76,10 @@ func (repository *CalendarEventRepository) Update(entity domain.CalendarEventEnt
 	repository.mu.Lock()
 	defer repository.mu.Unlock()
 
-	if _, found := repository.cache[entity.ID]; found == false {
+	if _, found := repository.cache[entity.ID]; !found {
 		return errors.New("not found in cache")
 	}
-	if _, found := repository.cacheByUserIds[userId]; found == false {
+	if _, found := repository.cacheByUserIds[userId]; !found {
 		return errors.New("not found in cache indexed by users ids")
 	}
 
@@ -94,17 +94,17 @@ func (repository *CalendarEventRepository) Delete(id string) error {
 	defer repository.mu.Unlock()
 
 	entity, found := repository.cache[id]
-	if found == false {
+	if !found {
 		return errors.New("not found in cache")
 	}
 
 	userId := strconv.Itoa(entity.UserID)
 	userEntities, found := repository.cacheByUserIds[userId]
-	if found == false {
+	if !found {
 		return errors.New("not found in cache indexed by user id")
 	}
 
-	if _, found := userEntities[id]; found == false {
+	if _, found := userEntities[id]; !found {
 		return errors.New("not found id in cache indexed by users ids")
 	}
 

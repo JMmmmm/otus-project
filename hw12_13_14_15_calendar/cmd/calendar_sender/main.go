@@ -3,12 +3,12 @@ package main
 import (
 	"context"
 	"flag"
-	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/logger"
 	"log"
 	"os/signal"
 	"syscall"
 
 	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/app/sender"
+	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/logger"
 )
 
 var configFile string
@@ -24,20 +24,20 @@ func main() {
 	defer cancel()
 	config, err := sender.NewConfig(configFile)
 	if err != nil {
-		log.Fatalf("Can not read config: %s, %v", configFile, err)
+		log.Panicf("Can not read config: %s, %v", configFile, err)
 	}
 	logg, err := logger.NewAppLogger(config.Logger.Level, config.Logger.OutputPath)
 	if err != nil {
-		log.Fatalf("Can not create logger: %v", err)
+		log.Panicf("Can not create logger: %v", err)
 	}
 
 	worker, err := sender.CreateWorker(ctx, config, logg)
 	if err != nil {
-		log.Fatalf("Can not create worker: %v", err)
+		log.Panicf("Can not create worker: %v", err)
 	}
 
 	err = worker.Execute(ctx, 1)
 	if err != nil {
-		log.Fatalf("Worker can not execute : %v", err)
+		log.Panicf("Worker can not execute : %v", err)
 	}
 }

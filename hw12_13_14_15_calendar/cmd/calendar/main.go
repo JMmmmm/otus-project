@@ -4,12 +4,13 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/app/calendar"
 	"log"
 	"net"
 	"os/signal"
 	"syscall"
 	"time"
+
+	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/app/calendar"
 
 	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/logger"
 	internalhttp "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/server/http"

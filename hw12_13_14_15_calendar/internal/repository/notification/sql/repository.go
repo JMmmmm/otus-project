@@ -3,12 +3,17 @@ package sqlrepository
 import (
 	"context"
 	"fmt"
+	"time"
+
 	_ "github.com/jackc/pgx/stdlib" //nolint
 	"github.com/jmoiron/sqlx"
-	"time"
 
 	domain "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/domain/notification"
 	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/logger"
+
+	// nolint
+	_ "github.com/jackc/pgx/stdlib"
+	"github.com/jmoiron/sqlx"
 )
 
 type NotificationRepository struct {

@@ -3,11 +3,12 @@ package scheduler
 import (
 	"encoding/json"
 	"fmt"
+	"log"
+	"time"
+
 	domain "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/domain/notification"
 	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/logger"
 	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/queue"
-	"log"
-	"time"
 )
 
 type Worker struct {
@@ -33,7 +34,6 @@ func (worker Worker) Execute(
 	reliable bool,
 	timeFrom time.Time,
 	timeTo time.Time) {
-
 	log.Print("Fixed Rate of 5 seconds")
 
 	err := worker.producer.Connect(uri, exchange, exchangeType, queueName)

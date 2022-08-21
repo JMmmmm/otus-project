@@ -3,10 +3,10 @@ package scheduler
 import (
 	"context"
 	"fmt"
-	rmqproducer "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/rmq/producer"
 
 	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/logger"
 	sqlrepository "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/repository/notification/sql"
+	rmqproducer "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/rmq/producer"
 )
 
 func CreateWorker(ctx context.Context, config Config, logger logger.Logger) (*Worker, error) {

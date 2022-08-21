@@ -2,6 +2,7 @@ package rmqproducer
 
 import (
 	"fmt"
+
 	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/logger"
 	"github.com/streadway/amqp"
 )

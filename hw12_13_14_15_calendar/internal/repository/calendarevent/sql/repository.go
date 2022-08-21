@@ -3,6 +3,7 @@ package sqlrepository
 import (
 	"context"
 	"fmt"
+
 	_ "github.com/jackc/pgx/stdlib" //nolint
 	"github.com/jmoiron/sqlx"
 
