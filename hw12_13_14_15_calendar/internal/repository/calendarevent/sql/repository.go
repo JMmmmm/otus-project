@@ -19,8 +19,8 @@ type CalendarEventRepository struct {
 }
 
 func NewCalendarEventRepository(
-	logger logger.Logger,
 	ctx context.Context,
+	logger logger.Logger,
 	dsn string) (*CalendarEventRepository, error) {
 	repository := &CalendarEventRepository{
 		Logger: logger,

@@ -168,19 +168,18 @@ func (c *Consumer) reConnect(ctx context.Context) (<-chan amqp.Delivery, error) 
 			return nil, fmt.Errorf("stop reconnecting")
 		}
 
-		select {
-		case <-time.After(d):
-			if err := c.connect(); err != nil {
-				log.Printf("could not connect in reconnect call: %+v", err)
-				continue
-			}
-			msgs, err := c.announceQueue()
-			if err != nil {
-				fmt.Printf("Couldn't connect: %+v", err)
-				continue
-			}
+		time.Sleep(d)
 
-			return msgs, nil
+		if err := c.connect(); err != nil {
+			log.Printf("could not connect in reconnect call: %+v", err)
+			continue
 		}
+		msgs, err := c.announceQueue()
+		if err != nil {
+			fmt.Printf("Couldn't connect: %+v", err)
+			continue
+		}
+
+		return msgs, nil
 	}
 }

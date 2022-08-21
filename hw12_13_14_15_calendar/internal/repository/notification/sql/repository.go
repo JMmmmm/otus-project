@@ -29,7 +29,9 @@ func NewNotificationRepository(ctx context.Context, logger logger.Logger, dsn st
 	return repository, err
 }
 
-func (repository *NotificationRepository) GetNotifications(timeFrom time.Time, timeTo time.Time) ([]domain.NotificationEntity, error) {
+func (repository *NotificationRepository) GetNotifications(
+	timeFrom time.Time,
+	timeTo time.Time) ([]domain.NotificationEntity, error) {
 	sql := `
 		SELECT 
 			id,

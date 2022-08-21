@@ -21,7 +21,7 @@ func CreateApp(ctx context.Context, config Config, logger logger.Logger) (*App, 
 
 	switch config.DB.DBType {
 	case dbTypeSQL:
-		calendarEventRepository, err = sqlrepository.NewCalendarEventRepository(logger, ctx, config.PSQL.DSN)
+		calendarEventRepository, err = sqlrepository.NewCalendarEventRepository(ctx, logger, config.PSQL.DSN)
 		if err != nil {
 			return nil, fmt.Errorf("can not create sql connection: %w", err)
 		}
