@@ -1,23 +1,29 @@
 package sqlrepository
 
 import (
+	"context"
 	"fmt"
+	_ "github.com/jackc/pgx/stdlib" //nolint
+	"github.com/jmoiron/sqlx"
 
 	domain "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/domain/calendarevent"
 	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/logger"
-	sqlstorage "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/storage/sql"
 )
 
 type CalendarEventRepository struct {
-	storage *sqlstorage.Storage
-	Logger  logger.Logger
+	Logger logger.Logger
+	DB     *sqlx.DB
+	Ctx    *context.Context
 }
 
-func NewCalendarEventRepository(storage *sqlstorage.Storage, logger logger.Logger) *CalendarEventRepository {
-	return &CalendarEventRepository{
-		storage: storage,
-		Logger:  logger,
+func NewCalendarEventRepository(logger logger.Logger, ctx context.Context, dsn string) (*CalendarEventRepository, error) {
+	repository := &CalendarEventRepository{
+		Logger: logger,
 	}
+
+	err := repository.connect(ctx, dsn)
+
+	return repository, err
 }
 
 func (repository *CalendarEventRepository) GetEvents(userID int) ([]domain.CalendarEventEntity, error) {
@@ -33,7 +39,7 @@ func (repository *CalendarEventRepository) GetEvents(userID int) ([]domain.Calen
 		FROM public.calendar_event where user_id = :userID
 	`
 
-	rows, err := repository.storage.DB.NamedQueryContext(*repository.storage.Ctx, sql, map[string]interface{}{
+	rows, err := repository.DB.NamedQueryContext(*repository.Ctx, sql, map[string]interface{}{
 		"userID": userID,
 	})
 	if err != nil {
@@ -59,7 +65,7 @@ func (repository *CalendarEventRepository) GetEvents(userID int) ([]domain.Calen
 }
 
 func (repository *CalendarEventRepository) InsertEntities(entities []domain.CalendarEventEntity) error {
-	_, err := repository.storage.DB.NamedExec(`
+	_, err := repository.DB.NamedExec(`
 		INSERT INTO public.calendar_event (user_id, title, datetime_event, duration_event)
         VALUES (:user_id, :title, :datetime_event, :duration_event)
 	`, entities)
@@ -68,7 +74,7 @@ func (repository *CalendarEventRepository) InsertEntities(entities []domain.Cale
 }
 
 func (repository *CalendarEventRepository) Update(entity domain.CalendarEventEntity) error {
-	_, err := repository.storage.DB.NamedExec(`
+	_, err := repository.DB.NamedExec(`
 		UPDATE public.calendar_event set title = :title, datetime_event = :datetime_event
         where id = :id
 	`, entity)
@@ -77,7 +83,22 @@ func (repository *CalendarEventRepository) Update(entity domain.CalendarEventEnt
 }
 
 func (repository *CalendarEventRepository) Delete(id string) error {
-	_, err := repository.storage.DB.Exec(`DELETE from public.calendar_event where id = $1`, id)
+	_, err := repository.DB.Exec(`DELETE from public.calendar_event where id = $1`, id)
 
 	return err
+}
+
+func (repository *CalendarEventRepository) connect(ctx context.Context, dsn string) (err error) {
+	repository.Ctx = &ctx
+
+	repository.DB, err = sqlx.Open("pgx", dsn)
+	if err != nil {
+		return fmt.Errorf("cannot open pgx driver: %w", err)
+	}
+
+	return repository.DB.PingContext(ctx)
+}
+
+func (repository *CalendarEventRepository) Close(ctx context.Context) error {
+	return repository.DB.Close()
 }

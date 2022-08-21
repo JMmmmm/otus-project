@@ -4,13 +4,13 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/app/calendar"
 	"log"
 	"net"
 	"os/signal"
 	"syscall"
 	"time"
 
-	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/app"
 	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/logger"
 	internalhttp "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/server/http"
 )
@@ -18,7 +18,7 @@ import (
 var configFile string
 
 func init() {
-	flag.StringVar(&configFile, "config", "configs/config.toml", "Path to configuration file")
+	flag.StringVar(&configFile, "config", "configs/calendar_config.toml", "Path to configuration file")
 }
 
 func main() {
@@ -29,7 +29,7 @@ func main() {
 		return
 	}
 
-	config, err := app.NewConfig(configFile)
+	config, err := calendar.NewConfig(configFile)
 	if err != nil {
 		log.Fatalf("Can not read config: %s, %v", configFile, err)
 	}
@@ -38,16 +38,15 @@ func main() {
 		log.Fatalf("Can not create logger: %v", err)
 	}
 
-	ctx, cancel := signal.NotifyContext(context.Background(),
-		syscall.SIGINT, syscall.SIGTERM, syscall.SIGHUP)
+	ctx, cancel := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM, syscall.SIGHUP)
 	defer cancel()
 
-	calendar, err := app.CreateApp(ctx, config, logg)
+	app, err := calendar.CreateApp(ctx, config, logg)
 	if err != nil {
 		logg.Error(fmt.Sprintf("can not create App: %v", err))
 		return
 	}
-	server := internalhttp.NewServer(logg, calendar, net.JoinHostPort(config.Server.Host, config.Server.Port))
+	server := internalhttp.NewServer(logg, app, net.JoinHostPort(config.Server.Host, config.Server.Port))
 
 	go func() {
 		<-ctx.Done()

@@ -3,13 +3,13 @@ package internalhttp
 import (
 	"context"
 	"fmt"
+	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/app/calendar"
 	"log"
 	"net"
 	"net/http"
 	"time"
 
 	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/api"
-	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/app"
 	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/logger"
 	calendar_event_api "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/calendar-event"
 	"github.com/felixge/httpsnoop"
@@ -43,7 +43,7 @@ func withLogger(handler http.Handler, logger logger.Logger) http.Handler {
 	})
 }
 
-func NewServer(logger logger.Logger, app app.Application, addr string) *Server {
+func NewServer(logger logger.Logger, app calendar.Application, addr string) *Server {
 	grpcSever := grpc.NewServer()
 
 	calendar_event_api.RegisterCalendarEventServer(grpcSever, &api.Controller{

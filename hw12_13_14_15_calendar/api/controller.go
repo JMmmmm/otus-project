@@ -2,9 +2,9 @@ package api
 
 import (
 	"context"
+	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/app/calendar"
 	"time"
 
-	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/app"
 	calendar_event_api "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/calendar-event"
 	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/protobuf/types/known/emptypb"
@@ -12,7 +12,7 @@ import (
 
 type Controller struct {
 	calendar_event_api.UnimplementedCalendarEventServer
-	App app.Application
+	App calendar.Application
 }
 
 func (c *Controller) GetEvents(ctx context.Context,

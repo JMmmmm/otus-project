@@ -1,4 +1,4 @@
-package app
+package calendar
 
 import (
 	"context"
@@ -8,8 +8,6 @@ import (
 	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/logger"
 	memoryrepository "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/repository/calendarevent/memory"
 	sqlrepository "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/repository/calendarevent/sql"
-	memorystorage "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/storage/memory"
-	sqlstorage "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/storage/sql"
 )
 
 const (
@@ -23,15 +21,12 @@ func CreateApp(ctx context.Context, config Config, logger logger.Logger) (*App, 
 
 	switch config.DB.DBType {
 	case dbTypeSQL:
-		storage := sqlstorage.New()
-		err = storage.Connect(ctx, config.PSQL.DSN)
+		calendarEventRepository, err = sqlrepository.NewCalendarEventRepository(logger, ctx, config.PSQL.DSN)
 		if err != nil {
 			return nil, fmt.Errorf("can not create sql connection: %w", err)
 		}
-		calendarEventRepository = sqlrepository.NewCalendarEventRepository(storage, logger)
 	case dbTypeMemory:
-		storage := memorystorage.New()
-		calendarEventRepository = memoryrepository.NewCalendarEventRepository(storage)
+		calendarEventRepository = memoryrepository.NewCalendarEventRepository()
 	default:
 		return nil, fmt.Errorf("undefined db type: %s", config.DB.DBType)
 	}
