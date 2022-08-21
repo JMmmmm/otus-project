@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/app/sender/rmqworker"
+	senderrmqworker "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/app/sender/rmqworker"
 	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/logger"
 	rmqconsumer "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/rmq/consumer"
 )

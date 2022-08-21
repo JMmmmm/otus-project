@@ -7,7 +7,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/cenkalti/backoff/v3"
+	backoff "github.com/cenkalti/backoff/v3"
 	"github.com/streadway/amqp"
 )
 
