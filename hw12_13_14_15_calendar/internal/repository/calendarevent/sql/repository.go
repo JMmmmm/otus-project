@@ -4,11 +4,12 @@ import (
 	"context"
 	"fmt"
 
-	_ "github.com/jackc/pgx/stdlib" //nolint
-	"github.com/jmoiron/sqlx"
-
 	domain "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/domain/calendarevent"
 	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/logger"
+
+	// nolint
+	_ "github.com/jackc/pgx/stdlib"
+	"github.com/jmoiron/sqlx"
 )
 
 type CalendarEventRepository struct {
@@ -17,7 +18,10 @@ type CalendarEventRepository struct {
 	Ctx    *context.Context
 }
 
-func NewCalendarEventRepository(logger logger.Logger, ctx context.Context, dsn string) (*CalendarEventRepository, error) {
+func NewCalendarEventRepository(
+	logger logger.Logger,
+	ctx context.Context,
+	dsn string) (*CalendarEventRepository, error) {
 	repository := &CalendarEventRepository{
 		Logger: logger,
 	}

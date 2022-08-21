@@ -23,7 +23,7 @@ type PSQLConfig struct {
 }
 
 type RmqConfig struct {
-	Uri          string
+	URI          string
 	Exchange     string
 	ExchangeType string
 	Reliable     bool

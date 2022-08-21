@@ -5,9 +5,6 @@ import (
 	"fmt"
 	"time"
 
-	_ "github.com/jackc/pgx/stdlib" //nolint
-	"github.com/jmoiron/sqlx"
-
 	domain "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/domain/notification"
 	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/logger"
 
@@ -22,7 +19,7 @@ type NotificationRepository struct {
 	Ctx    *context.Context
 }
 
-func NewNotificationRepository(logger logger.Logger, ctx context.Context, dsn string) (*NotificationRepository, error) {
+func NewNotificationRepository(ctx context.Context, logger logger.Logger, dsn string) (*NotificationRepository, error) {
 	repository := &NotificationRepository{
 		Logger: logger,
 	}

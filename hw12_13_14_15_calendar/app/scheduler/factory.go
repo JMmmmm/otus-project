@@ -10,9 +10,9 @@ import (
 )
 
 func CreateWorker(ctx context.Context, config Config, logger logger.Logger) (*Worker, error) {
-	repository, err := sqlrepository.NewNotificationRepository(logger, ctx, config.PSQL.DSN)
+	repository, err := sqlrepository.NewNotificationRepository(ctx, logger, config.PSQL.DSN)
 	if err != nil {
-		return nil, fmt.Errorf("can not create repository: %v", err)
+		return nil, fmt.Errorf("can not create repository: %w", err)
 	}
 
 	producer := rmqproducer.NewProducer(logger)

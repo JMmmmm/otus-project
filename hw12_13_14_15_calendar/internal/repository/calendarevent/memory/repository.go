@@ -72,19 +72,19 @@ func (repository *CalendarEventRepository) InsertEntities(entities []domain.Cale
 }
 
 func (repository *CalendarEventRepository) Update(entity domain.CalendarEventEntity) error {
-	userId := strconv.Itoa(entity.UserID)
+	userID := strconv.Itoa(entity.UserID)
 	repository.mu.Lock()
 	defer repository.mu.Unlock()
 
 	if _, found := repository.cache[entity.ID]; !found {
 		return errors.New("not found in cache")
 	}
-	if _, found := repository.cacheByUserIds[userId]; !found {
+	if _, found := repository.cacheByUserIds[userID]; !found {
 		return errors.New("not found in cache indexed by users ids")
 	}
 
 	repository.cache[entity.ID] = entity
-	repository.cacheByUserIds[userId][entity.ID] = entity
+	repository.cacheByUserIds[userID][entity.ID] = entity
 
 	return nil
 }
@@ -98,8 +98,8 @@ func (repository *CalendarEventRepository) Delete(id string) error {
 		return errors.New("not found in cache")
 	}
 
-	userId := strconv.Itoa(entity.UserID)
-	userEntities, found := repository.cacheByUserIds[userId]
+	userID := strconv.Itoa(entity.UserID)
+	userEntities, found := repository.cacheByUserIds[userID]
 	if !found {
 		return errors.New("not found in cache indexed by user id")
 	}
@@ -111,9 +111,9 @@ func (repository *CalendarEventRepository) Delete(id string) error {
 	delete(repository.cache, id)
 	delete(userEntities, id)
 	if len(userEntities) == 0 {
-		delete(repository.cacheByUserIds, userId)
+		delete(repository.cacheByUserIds, userID)
 	} else {
-		repository.cacheByUserIds[userId] = userEntities
+		repository.cacheByUserIds[userID] = userEntities
 	}
 
 	return nil

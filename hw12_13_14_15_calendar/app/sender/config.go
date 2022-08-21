@@ -15,7 +15,7 @@ type LoggerConf struct {
 }
 
 type RmqConfig struct {
-	Uri          string
+	URI          string
 	Exchange     string
 	ExchangeType string
 	Reliable     bool

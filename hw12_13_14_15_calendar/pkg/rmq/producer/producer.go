@@ -57,7 +57,7 @@ func (producer *Producer) Connect(amqpURI string, exchange string, exchangeType 
 		nil,
 	)
 
-	return nil
+	return err
 }
 
 func (producer *Producer) Publish(exchange string, routingKey string, body string, reliable bool) (err error) {
