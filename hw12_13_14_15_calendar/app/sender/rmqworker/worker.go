@@ -22,8 +22,6 @@ func NewWorker(logg logger.Logger, consumer rmqconsumer.Consumer) *Worker {
 }
 
 func (worker Worker) Execute(ctx context.Context, threads int) error {
-	log.Print("Fixed Rate of 5 seconds")
-
 	return worker.consumer.Handle(ctx, work, threads)
 }
 

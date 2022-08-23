@@ -3,7 +3,6 @@ package scheduler
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"time"
 
 	domain "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/domain/notification"
@@ -34,8 +33,6 @@ func (worker Worker) Execute(
 	reliable bool,
 	timeFrom time.Time,
 	timeTo time.Time) {
-	log.Print("Fixed Rate of 5 seconds")
-
 	err := worker.producer.Connect(uri, exchange, exchangeType, queueName)
 	if err != nil {
 		worker.logger.Error(fmt.Sprintf("can not connect to rmq: %v", err))
