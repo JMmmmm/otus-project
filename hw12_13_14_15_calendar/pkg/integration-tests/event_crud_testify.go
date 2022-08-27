@@ -1,4 +1,4 @@
-package integration_tests
+package integrationtests
 
 import (
 	"bytes"
@@ -22,7 +22,7 @@ func (test *EventCrudTest) iSendRequestTo(httpMethod, url string) (err error) {
 
 	switch httpMethod {
 	case http.MethodGet:
-		r, err = http.Get(url)
+		r, err = http.Get(url) //nolint
 	default:
 		err = fmt.Errorf("unknown method: %s", httpMethod)
 	}
@@ -62,14 +62,18 @@ func (test *EventCrudTest) theResponseShouldMatchJSON(body *godog.DocString) (er
 	return nil
 }
 
-func (test *EventCrudTest) iSendRequestToWithData(httpMethod string, addr string, contentType string, data string) (err error) {
+func (test *EventCrudTest) iSendRequestToWithData(
+	httpMethod string,
+	addr string,
+	contentType string,
+	data string) (err error) {
 	var r *http.Response
 
 	switch httpMethod {
 	case http.MethodPost:
 		replacer := strings.NewReplacer("\n", "", "\t", "")
-		cleanJson := replacer.Replace(data)
-		r, err = http.Post(addr, contentType, bytes.NewReader([]byte(cleanJson)))
+		cleanJSON := replacer.Replace(data)
+		r, err = http.Post(addr, contentType, bytes.NewReader([]byte(cleanJSON))) //nolint
 	default:
 		err = fmt.Errorf("unknown method: %s", httpMethod)
 	}

@@ -1,4 +1,4 @@
-package integration_tests
+package integrationtests
 
 import (
 	"context"
@@ -10,13 +10,13 @@ import (
 	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/logger"
 	rmqproducer "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/rmq/producer"
 	"github.com/cucumber/godog"
-	_ "github.com/jackc/pgx/stdlib"
+	_ "github.com/jackc/pgx/stdlib" //nolint
 	"github.com/jmoiron/sqlx"
 )
 
 var (
 	dbDSN           = os.Getenv("TESTS_DB_DSN")
-	amqpUri         = os.Getenv("TESTS_AMQP_URI")
+	amqpURI         = os.Getenv("TESTS_AMQP_URI")
 	amqpExchange    = "test-exchange-2"
 	amqpEchangeType = "direct"
 	amqpKey         = "test-key"
@@ -25,8 +25,8 @@ var (
 )
 
 func init() {
-	if amqpUri == "" {
-		amqpUri = "amqp://guest:guest@localhost:5672/"
+	if amqpURI == "" {
+		amqpURI = "amqp://guest:guest@localhost:5672/"
 	}
 	if dbDSN == "" {
 		dbDSN = "host=localhost port=5432 user=postgres password=postgres dbname=postgres sslmode=disable"
@@ -43,7 +43,7 @@ type notifyTest struct {
 	producer *rmqproducer.Producer
 	db       *sqlx.DB
 
-	notificationId string
+	notificationID string
 }
 
 func (test *notifyTest) start(ctx context.Context, sc *godog.Scenario) (context.Context, error) {
@@ -53,7 +53,7 @@ func (test *notifyTest) start(ctx context.Context, sc *godog.Scenario) (context.
 	}
 
 	test.producer = rmqproducer.NewProducer(logg)
-	err = test.producer.Connect(amqpUri, amqpExchange, amqpEchangeType, amqpQueue)
+	err = test.producer.Connect(amqpURI, amqpExchange, amqpEchangeType, amqpQueue)
 	if err != nil {
 		return ctx, err
 	}
@@ -70,6 +70,10 @@ func (test *notifyTest) start(ctx context.Context, sc *godog.Scenario) (context.
 }
 
 func (test *notifyTest) stop(ctx context.Context, sc *godog.Scenario, err error) (context.Context, error) {
+	if err != nil {
+		return ctx, err
+	}
+
 	err = test.producer.Close()
 	if err != nil {
 		return ctx, err
@@ -93,7 +97,7 @@ func (test *notifyTest) theNotificationShouldBe(title string) error {
 	`
 
 	var notification NotificationEntity
-	err := test.db.Get(&notification, sql, test.notificationId)
+	err := test.db.Get(&notification, sql, test.notificationID)
 	if err != nil {
 		return err
 	}
@@ -111,7 +115,7 @@ func (test *notifyTest) iPublishNotificationWithData(data string) (err error) {
 		return err
 	}
 
-	test.notificationId = notification.ID
+	test.notificationID = notification.ID
 
 	return test.producer.Publish(amqpExchange, amqpKey, data, amqpReliable)
 }
