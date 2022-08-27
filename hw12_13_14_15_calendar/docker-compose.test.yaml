@@ -1,0 +1,94 @@
+version: "3"
+
+networks:
+  rabbit:
+    driver: bridge
+  db:
+    driver: bridge
+
+services:
+  postgres:
+    image: postgres:11.1
+    hostname: postgres-container
+    ports:
+      - "5432:5432"
+    expose:
+      - 5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      # https://github.com/docker-library/postgres/blob/master/docker-entrypoint.sh#L145
+      - ./scripts/setup.sql:/docker-entrypoint-initdb.d/setup.sql
+    networks:
+      - db
+
+  rabbit:
+    image: rabbitmq:3.7.17-management
+    hostname: rabbit
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    expose:
+      - 15672
+    volumes:
+      - ./configs/rabbit.def.json:/etc/rabbitmq/definitions.json:ro
+      - ./configs/rabbit.config:/etc/rabbitmq/rabbitmq.config:ro
+    networks:
+      - rabbit
+
+  calendar_service:
+    build:
+      context: .
+      dockerfile: calendar.Dockerfile
+    depends_on:
+      - postgres
+    restart: always
+    ports:
+      - "8081:8081"
+    expose:
+      - 8081
+    networks:
+      - db
+
+  scheduler_service:
+    build:
+      context: .
+      dockerfile: scheduler.Dockerfile
+    depends_on:
+      - postgres
+      - rabbit
+    restart: on-failure
+    networks:
+      - db
+      - rabbit
+
+  sender_service:
+    build:
+      context: .
+      dockerfile: sender.Dockerfile
+    depends_on:
+      - postgres
+      - rabbit
+    restart: on-failure
+    networks:
+      - db
+      - rabbit
+
+  integration_tests:
+    build:
+      context: .
+      dockerfile: itests.Dockerfile
+    command: "true"
+    depends_on:
+      - postgres
+      - rabbit
+    #    links:
+    #      - sender_service
+    environment:
+      TESTS_AMQP_URI: "amqp://guest:guest@rabbit:5672/"
+      TESTS_DB_DSN: "host=postgres-container port=5432 user=postgres password=postgres dbname=postgres sslmode=disable"
+    networks:
+      - rabbit
+      - db
