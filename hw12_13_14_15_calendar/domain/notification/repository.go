@@ -4,4 +4,5 @@ import "time"
 
 type NotificationRepository interface {
 	GetNotifications(timeFrom time.Time, timeTo time.Time) ([]NotificationEntity, error)
+	Update(entity NotificationEntity) error
 }

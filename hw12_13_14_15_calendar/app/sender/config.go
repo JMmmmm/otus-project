@@ -7,11 +7,16 @@ import (
 type Config struct {
 	Logger LoggerConf
 	RMQ    RmqConfig
+	PSQL   PSQLConfig
 }
 
 type LoggerConf struct {
 	Level      string
 	OutputPath string
+}
+
+type PSQLConfig struct {
+	DSN string
 }
 
 type RmqConfig struct {

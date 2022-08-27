@@ -1,8 +1,17 @@
-BIN := "./bin/calendar"
+BIN := "./bin2/calendar"
 DOCKER_IMG="calendar:develop"
 
 GIT_HASH := $(shell git log --format="%h" -n 1)
 LDFLAGS := -X main.release="develop" -X main.buildDate=$(shell date -u +%Y-%m-%dT%H:%M:%S) -X main.gitHash=$(GIT_HASH)
+
+.PHONY: build run build-img run-img version test lint
+
+#up: .vendor-proto generate-proto
+up:
+	docker compose up
+
+down:
+	docker compose down
 
 build:
 	go build -v -o $(BIN) -ldflags "$(LDFLAGS)" ./cmd/calendar
@@ -14,7 +23,7 @@ build-img:
 	docker build \
 		--build-arg=LDFLAGS="$(LDFLAGS)" \
 		-t $(DOCKER_IMG) \
-		-f build/Dockerfile .
+		-f build/calendar/Dockerfile .
 
 run-img: build-img
 	docker run $(DOCKER_IMG)
@@ -32,7 +41,7 @@ lint: install-lint-deps
 	golangci-lint run ./...
 
 migrate:
-	goose postgres "host=0.0.0.0 port=5432 user=postgres password=postgres dbname=postgres sslmode=disable" ./migrations/0001_migration.sql up
+	goose postgres "host=postgres port=5432 user=postgres password=postgres dbname=postgres sslmode=disable" ./migrations/* up
 
 .vendor-proto:
 	mkdir -p vendor.protogen
@@ -73,5 +82,3 @@ evans-connect:
 rabbit:
     # http://localhost:15672/ guest:guest
 	docker run -d --name rabbit -p 15672:15672 -p 5672:5672 rabbitmq:3-management
-
-.PHONY: build run build-img run-img version test lint

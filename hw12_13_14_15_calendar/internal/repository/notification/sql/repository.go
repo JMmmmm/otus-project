@@ -3,11 +3,10 @@ package sqlrepository
 import (
 	"context"
 	"fmt"
+	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/logger"
 	"time"
 
 	domain "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/domain/notification"
-	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/logger"
-
 	// nolint
 	_ "github.com/jackc/pgx/stdlib"
 	"github.com/jmoiron/sqlx"
@@ -41,6 +40,8 @@ func (repository *NotificationRepository) GetNotifications(
 		FROM public.calendar_event where datetime_event > :timeFrom and datetime_event < :timeTo
 	`
 
+	repository.Logger.Info("TimeFrom: " + timeFrom.String() + ", TimeTo: " + timeTo.String())
+
 	rows, err := repository.DB.NamedQueryContext(*repository.Ctx, sql, map[string]interface{}{
 		"timeFrom": timeFrom,
 		"timeTo":   timeTo,
@@ -65,6 +66,15 @@ func (repository *NotificationRepository) GetNotifications(
 		events = append(events, event)
 	}
 	return events, rows.Err()
+}
+
+func (repository *NotificationRepository) Update(entity domain.NotificationEntity) error {
+	_, err := repository.DB.NamedExec(`
+		UPDATE public.calendar_event set title = :title, datetime_event = :datetime_event
+        where id = :id
+	`, entity)
+
+	return err
 }
 
 func (repository *NotificationRepository) connect(ctx context.Context, dsn string) (err error) {

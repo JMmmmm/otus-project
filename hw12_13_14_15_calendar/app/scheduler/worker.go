@@ -3,10 +3,10 @@ package scheduler
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/logger"
 	"time"
 
 	domain "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/domain/notification"
-	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/logger"
 	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/queue"
 )
 
@@ -50,6 +50,8 @@ func (worker Worker) Execute(
 			worker.logger.Error(fmt.Sprintf("Can not json encode: %v", err))
 			continue
 		}
+
+		worker.logger.Info(string(body))
 
 		err = worker.producer.Publish(exchange, routingKey, string(body), reliable)
 		if err != nil {

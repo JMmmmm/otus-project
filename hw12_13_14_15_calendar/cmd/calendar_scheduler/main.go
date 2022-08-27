@@ -4,13 +4,13 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/logger"
 	"log"
 	"os/signal"
 	"syscall"
 	"time"
 
 	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/app/scheduler"
-	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/logger"
 	"github.com/procyon-projects/chrono"
 )
 

@@ -6,6 +6,8 @@ require (
 	github.com/BurntSushi/toml v1.0.0
 	github.com/cenkalti/backoff/v3 v3.2.2
 	github.com/cockroachdb/apd v1.1.0 // indirect
+	github.com/cucumber/godog v0.12.5
+	github.com/cucumber/messages-go/v10 v10.0.3
 	github.com/felixge/httpsnoop v1.0.2
 	github.com/gofrs/uuid v4.2.0+incompatible // indirect
 	github.com/golang/protobuf v1.5.2

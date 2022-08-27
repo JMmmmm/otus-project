@@ -188,7 +188,7 @@ func local_request_CalendarEvent_DeleteEvent_0(ctx context.Context, marshaler ru
 // RegisterCalendarEventHandlerServer registers the http handlers for service CalendarEvent to "mux".
 // UnaryRPC     :call CalendarEventServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
-// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterCalendarEventHandlerFromEndpoint instead.
+// Note that using this registration option will cause many gRPC library calendar_event_features to stop working. Consider using RegisterCalendarEventHandlerFromEndpoint instead.
 func RegisterCalendarEventHandlerServer(ctx context.Context, mux *runtime.ServeMux, server CalendarEventServer) error {
 
 	mux.Handle("GET", pattern_CalendarEvent_GetEvents_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {

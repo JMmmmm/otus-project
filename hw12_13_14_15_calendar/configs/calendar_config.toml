@@ -4,7 +4,7 @@ level = "INFO"
 outputPath = "stdout"
 
 [psql]
-dsn = "host=0.0.0.0 port=5432 user=postgres password=postgres dbname=postgres sslmode=disable"
+dsn = "host=postgres-container port=5432 user=postgres password=postgres dbname=postgres sslmode=disable"
 
 [server]
 host = ""
