@@ -7,14 +7,14 @@ import (
 	"testing"
 	"time"
 
-	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/integration-tests"
+	integrationtests "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/integration-tests"
 	"github.com/cucumber/godog"
 	"github.com/cucumber/godog/colors"
 )
 
 func TestNotification(t *testing.T) {
 	const delay = 1 * time.Second
-	var opts = godog.Options{Output: colors.Colored(os.Stdout)}
+	opts := godog.Options{Output: colors.Colored(os.Stdout)}
 
 	log.Printf("wait %s for service availability...", delay)
 	time.Sleep(delay)

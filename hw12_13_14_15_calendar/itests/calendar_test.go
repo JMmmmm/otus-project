@@ -1,16 +1,17 @@
 package itests
 
 import (
-	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/integration-tests"
-	"github.com/cucumber/godog"
-	"github.com/cucumber/godog/colors"
 	"os"
 	"syscall"
 	"testing"
+
+	integrationtests "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/integration-tests"
+	"github.com/cucumber/godog"
+	"github.com/cucumber/godog/colors"
 )
 
 func TestCalendar(t *testing.T) {
-	var opts = godog.Options{Output: colors.Colored(os.Stdout)}
+	opts := godog.Options{Output: colors.Colored(os.Stdout)}
 
 	var status int
 	opts.Format = "pretty"
