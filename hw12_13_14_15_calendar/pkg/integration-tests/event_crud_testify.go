@@ -17,12 +17,12 @@ type EventCrudTest struct {
 	responseBody       []byte
 }
 
-func (test *EventCrudTest) iSendRequestTo(httpMethod, addr string) (err error) {
+func (test *EventCrudTest) iSendRequestTo(httpMethod, url string) (err error) {
 	var r *http.Response
 
 	switch httpMethod {
 	case http.MethodGet:
-		r, err = http.Get(addr)
+		r, err = http.Get(url)
 	default:
 		err = fmt.Errorf("unknown method: %s", httpMethod)
 	}

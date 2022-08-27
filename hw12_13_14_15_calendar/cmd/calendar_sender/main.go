@@ -3,12 +3,12 @@ package main
 import (
 	"context"
 	"flag"
-	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/logger"
 	"log"
 	"os/signal"
 	"syscall"
 
 	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/app/sender"
+	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/logger"
 )
 
 var configFile string

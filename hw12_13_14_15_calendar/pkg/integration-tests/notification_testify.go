@@ -4,13 +4,14 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"os"
+	"time"
+
 	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/logger"
 	rmqproducer "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/rmq/producer"
 	"github.com/cucumber/godog"
 	_ "github.com/jackc/pgx/stdlib"
 	"github.com/jmoiron/sqlx"
-	"os"
-	"time"
 )
 
 var (
@@ -124,5 +125,4 @@ func NotificationFeatureContext(s *godog.ScenarioContext) {
 	s.Step(`^The notification should be "([^"]*)"$`, test.theNotificationShouldBe)
 
 	s.After(test.stop)
-
 }

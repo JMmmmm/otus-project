@@ -3,9 +3,9 @@ package scheduler
 import (
 	"context"
 	"fmt"
-	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/logger"
 
 	sqlrepository "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/repository/notification/sql"
+	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/logger"
 	rmqproducer "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/rmq/producer"
 )
 

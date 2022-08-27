@@ -3,11 +3,11 @@ package scheduler
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/logger"
 	"time"
 
 	domain "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/domain/notification"
 	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/queue"
+	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/logger"
 )
 
 type Worker struct {

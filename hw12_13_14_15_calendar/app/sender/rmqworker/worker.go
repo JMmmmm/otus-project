@@ -3,10 +3,10 @@ package senderrmqworker
 import (
 	"context"
 	"encoding/json"
-	domain "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/domain/notification"
-	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/logger"
 	"log"
 
+	domain "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/domain/notification"
+	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/logger"
 	rmqconsumer "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/rmq/consumer"
 	"github.com/streadway/amqp"
 )
@@ -26,7 +26,6 @@ func NewWorker(logg logger.Logger, consumer rmqconsumer.Consumer, repository dom
 }
 
 func (worker Worker) Execute(ctx context.Context, threads int) error {
-	ctx = context.WithValue(ctx, "repository", worker.repository)
 	return worker.consumer.Handle(ctx, worker.work, threads)
 }
 

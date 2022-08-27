@@ -3,9 +3,10 @@ package sqlrepository
 import (
 	"context"
 	"fmt"
-	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/logger"
 
 	domain "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/domain/calendarevent"
+	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/logger"
+
 	// nolint
 	_ "github.com/jackc/pgx/stdlib"
 	"github.com/jmoiron/sqlx"

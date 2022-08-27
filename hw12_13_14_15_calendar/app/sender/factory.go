@@ -3,11 +3,11 @@ package sender
 import (
 	"context"
 	"fmt"
-	sqlrepository "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/repository/notification/sql"
-	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/logger"
 	"time"
 
 	senderrmqworker "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/app/sender/rmqworker"
+	sqlrepository "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/repository/notification/sql"
+	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/logger"
 	rmqconsumer "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/rmq/consumer"
 )
 

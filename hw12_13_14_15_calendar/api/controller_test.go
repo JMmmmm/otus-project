@@ -2,9 +2,10 @@ package api
 
 import (
 	"context"
-	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/logger"
 	"log"
 	"testing"
+
+	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/logger"
 
 	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/app/calendar"
 	calendar_event_api "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/calendar-event"

@@ -3,11 +3,11 @@ package calendar
 import (
 	"context"
 	"fmt"
-	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/logger"
 
 	domain "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/domain/calendarevent"
 	memoryrepository "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/repository/calendarevent/memory"
 	sqlrepository "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/repository/calendarevent/sql"
+	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/logger"
 )
 
 const (

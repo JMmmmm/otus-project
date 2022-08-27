@@ -1,10 +1,10 @@
 package calendar
 
 import (
-	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/logger"
 	"time"
 
 	domain "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/domain/calendarevent"
+	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/logger"
 )
 
 type Application interface {

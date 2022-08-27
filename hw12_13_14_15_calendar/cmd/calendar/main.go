@@ -4,7 +4,6 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/logger"
 	"log"
 	"net"
 	"os/signal"
@@ -13,6 +12,7 @@ import (
 
 	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/app/calendar"
 	internalhttp "github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/internal/server/http"
+	"github.com/JMmmmm/otus-project/hw12_13_14_15_calendar/pkg/logger"
 )
 
 var configFile string
